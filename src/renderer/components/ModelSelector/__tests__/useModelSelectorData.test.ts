@@ -1,4 +1,3 @@
-import { useAgentModelFilter } from '@renderer/hooks/agent/useAgentModelFilter'
 import { LOCAL_EMBEDDING_PROVIDER_ID } from '@shared/data/presets/localEmbedding'
 import { type Model, MODEL_CAPABILITY } from '@shared/data/types/model'
 import type { Provider } from '@shared/data/types/provider'

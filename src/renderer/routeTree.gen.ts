@@ -42,7 +42,6 @@ import { Route as AppFilesRouteImport } from './routes/app/files'
 import { Route as AppFilePreviewRouteImport } from './routes/app/file-preview'
 import { Route as AppCodeRouteImport } from './routes/app/code'
 import { Route as AppChatRouteImport } from './routes/app/chat'
-import { Route as AppAgentsRouteImport } from './routes/app/agents'
 import { Route as SettingsScheduledTasksIndexRouteImport } from './routes/settings/scheduled-tasks.index'
 import { Route as SettingsMcpIndexRouteImport } from './routes/settings/mcp.index'
 import { Route as AppPaintingsIndexRouteImport } from './routes/app/paintings.index'
@@ -224,11 +223,6 @@ const AppChatRoute = AppChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => AppRoute,
 } as any)
-const AppAgentsRoute = AppAgentsRouteImport.update({
-  id: '/agents',
-  path: '/agents',
-  getParentRoute: () => AppRoute,
-} as any)
 const SettingsScheduledTasksIndexRoute =
   SettingsScheduledTasksIndexRouteImport.update({
     id: '/',
@@ -306,7 +300,6 @@ const SettingsMcpSettingsServerIdRoute =
 export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
-  '/app/agents': typeof AppAgentsRoute
   '/app/chat': typeof AppChatRoute
   '/app/code': typeof AppCodeRoute
   '/app/file-preview': typeof AppFilePreviewRoute
@@ -355,7 +348,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/app': typeof AppRouteWithChildren
-  '/app/agents': typeof AppAgentsRoute
   '/app/chat': typeof AppChatRoute
   '/app/code': typeof AppCodeRoute
   '/app/file-preview': typeof AppFilePreviewRoute
@@ -404,7 +396,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/app': typeof AppRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
-  '/app/agents': typeof AppAgentsRoute
   '/app/chat': typeof AppChatRoute
   '/app/code': typeof AppCodeRoute
   '/app/file-preview': typeof AppFilePreviewRoute
@@ -456,7 +447,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/app'
     | '/settings'
-    | '/app/agents'
     | '/app/chat'
     | '/app/code'
     | '/app/file-preview'
@@ -505,7 +495,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/app'
-    | '/app/agents'
     | '/app/chat'
     | '/app/code'
     | '/app/file-preview'
@@ -553,7 +542,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/app'
     | '/settings'
-    | '/app/agents'
     | '/app/chat'
     | '/app/code'
     | '/app/file-preview'
@@ -839,13 +827,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChatRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/agents': {
-      id: '/app/agents'
-      path: '/agents'
-      fullPath: '/app/agents'
-      preLoaderRoute: typeof AppAgentsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/settings/scheduled-tasks/': {
       id: '/settings/scheduled-tasks/'
       path: '/'
@@ -948,7 +929,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
-  AppAgentsRoute: typeof AppAgentsRoute
   AppChatRoute: typeof AppChatRoute
   AppCodeRoute: typeof AppCodeRoute
   AppFilePreviewRoute: typeof AppFilePreviewRoute
@@ -964,7 +944,6 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAgentsRoute: AppAgentsRoute,
   AppChatRoute: AppChatRoute,
   AppCodeRoute: AppCodeRoute,
   AppFilePreviewRoute: AppFilePreviewRoute,

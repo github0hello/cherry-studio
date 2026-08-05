@@ -1,5 +1,4 @@
 import { modelMatchesDisplayTag } from '@renderer/components/tags/Model'
-import { modelFilterIncludesAgentOnlyProviders } from '@renderer/hooks/agent/useAgentModelFilter'
 import { useModels } from '@renderer/hooks/useModel'
 import { usePins } from '@renderer/hooks/usePins'
 import { useProviders } from '@renderer/hooks/useProvider'
@@ -104,9 +103,8 @@ export function useModelSelectorData({
 
   const baseModelFilter = useCallback((model: Model) => filter?.(model) ?? true, [filter])
 
-  // Agent-only providers (e.g. `claude-code`, login-based, no API key) are hidden
-  // from general selectors; only agent pickers (whose filter is marked) surface them.
-  const includeAgentOnlyProviders = useMemo(() => modelFilterIncludesAgentOnlyProviders(filter), [filter])
+  // Agent-only providers (e.g. `claude-code`, login-based, no API key) are hidden from general selectors.
+  const includeAgentOnlyProviders = false
 
   // A provider whose credentials come from an external CLI login carries no API
   // key and cannot serve a normal chat request — it is agent-only.
