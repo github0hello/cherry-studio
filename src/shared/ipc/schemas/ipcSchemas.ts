@@ -15,7 +15,6 @@ import { fileProcessingRequestSchemas } from './fileProcessing'
 import { knowledgeRequestSchemas } from './knowledge'
 import { type LocalModelEventSchemas, localModelRequestSchemas } from './localModel'
 import { type McpEventSchemas, mcpRequestSchemas } from './mcp'
-import { miniAppRequestSchemas } from './miniApp'
 import { type NavigationEventSchemas, navigationRequestSchemas } from './navigation'
 import { type NotificationEventSchemas, notificationRequestSchemas } from './notification'
 import { type OAuthEventSchemas, oauthRequestSchemas } from './oauth'
@@ -58,7 +57,6 @@ export const ipcRequestSchemas = {
   ...knowledgeRequestSchemas,
   ...localModelRequestSchemas,
   ...mcpRequestSchemas,
-  ...miniAppRequestSchemas,
   ...navigationRequestSchemas,
   ...notificationRequestSchemas,
   ...oauthRequestSchemas,

@@ -5,7 +5,6 @@ import {
   FileSearch,
   Folder,
   Languages,
-  LayoutGrid,
   MessageSquare,
   MousePointerClick,
   NotepadText,
@@ -22,10 +21,9 @@ export const SIDEBAR_ICON_COMPONENTS: Record<SidebarAppId, LucideIcon> = {
   assistants: MessageSquare,
   agents: MousePointerClick,
   paintings: Palette,
-  translate: Languages,
-  mini_app: LayoutGrid,
   knowledge: FileSearch,
   files: Folder,
   code_tools: Code,
-  notes: NotepadText
+  notes: NotepadText,
+  translate: Languages
 }

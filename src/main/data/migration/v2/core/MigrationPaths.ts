@@ -67,8 +67,6 @@ export interface MigrationPaths {
   readonly claudeProjectsDir: string
   /** {userData}/Data/Agents/system — app-owned per-session workspace root. */
   readonly agentSystemWorkspacesDir: string
-  /** {userData}/Data/Files/custom-minapps.json — v1 sidecar with full custom miniapp records (logos stripped from Redux). */
-  readonly customMiniAppsFile: string
   /** {userData}/migration_temp — renderer export staging root. */
   readonly migrationTempDir: string
   /** {userData}/migration_temp/redux_export — per-category Redux exports. */
@@ -240,7 +238,6 @@ export function resolveMigrationPaths(): MigrationPathsResult {
     claudeConfigDir: path.join(currentUserData, 'Data', 'Agents', '.claude'),
     claudeProjectsDir: path.join(currentUserData, 'Data', 'Agents', '.claude', 'projects'),
     agentSystemWorkspacesDir: path.join(currentUserData, 'Data', 'Agents', 'system'),
-    customMiniAppsFile: path.join(filesDataDir, 'custom-minapps.json'),
     migrationTempDir,
     migrationReduxExportDir: path.join(migrationTempDir, 'redux_export'),
     migrationDexieExportDir: path.join(migrationTempDir, 'dexie_export'),

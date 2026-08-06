@@ -431,18 +431,6 @@ export const REDUX_STORE_MAPPINGS = {
       targetKey: 'data.integration.siyuan.root_path'
     },
     {
-      originalKey: 'maxKeepAliveMinapps',
-      targetKey: 'feature.mini_app.max_keep_alive'
-    },
-    {
-      originalKey: 'minappsOpenLinkExternal',
-      targetKey: 'feature.mini_app.open_link_external'
-    },
-    {
-      originalKey: 'minAppRegion',
-      targetKey: 'feature.mini_app.region'
-    },
-    {
       originalKey: 'privacyPolicyVersion',
       targetKey: 'app.privacy.policy_version'
     },

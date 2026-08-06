@@ -86,11 +86,6 @@ const SIDEBAR_APP_DEFINITIONS = [
     routePrefix: '/app/translate'
   },
   {
-    id: 'mini_app',
-    routePrefix: '/app/mini-app',
-    exactRouteFocus: true
-  },
-  {
     id: 'knowledge',
     routePrefix: '/app/knowledge'
   },
@@ -168,15 +163,11 @@ function createSidebarAppFavorite(id: SidebarAppId): SidebarFavoriteItem {
   return { type: 'app', id }
 }
 
-function createSidebarMiniAppFavorite(id: string): SidebarFavoriteItem {
-  return { type: 'mini_app', id }
-}
-
 /**
  * Stable identity for a favorite — its react key and reorder-matching key.
  *
  * Keep the type namespace. Future item types (including `group`) must not collide
- * with app or mini-app ids.
+ * with app ids.
  */
 export function getSidebarFavoriteKey(favorite: SidebarFavoriteItem): string {
   return `${favorite.type}:${favorite.id}`
@@ -184,13 +175,7 @@ export function getSidebarFavoriteKey(favorite: SidebarFavoriteItem): string {
 
 function isForwardCompatibleSidebarFavoriteItem(favorite: SidebarFavoriteItem): boolean {
   const item = favorite as { type?: unknown; id?: unknown }
-  return (
-    typeof item.type === 'string' &&
-    item.type !== 'app' &&
-    item.type !== 'mini_app' &&
-    typeof item.id === 'string' &&
-    item.id.length > 0
-  )
+  return typeof item.type === 'string' && item.type !== 'app' && typeof item.id === 'string' && item.id.length > 0
 }
 
 function getForwardCompatibleSidebarFavoriteItems(
@@ -228,8 +213,6 @@ function normalizeSidebarFavoriteItem(favorite: SidebarFavoriteItem): SidebarFav
   switch (favorite.type) {
     case 'app':
       return isSidebarAppId(favorite.id) ? { ...favorite } : undefined
-    case 'mini_app':
-      return favorite.id ? { ...favorite } : undefined
     default: {
       // Untrusted storage boundary: an unknown type (corrupt or written by a newer
       // build) is dropped, not thrown, so a downgrade never crashes. The `never`
@@ -261,18 +244,11 @@ export function getSidebarFavoriteItems(favorites: readonly SidebarFavoriteItem[
   return items
 }
 
-/** Mini app sidebar favorites: an ordered, deduped list of mini app ids. */
-export function getSidebarMiniAppFavoriteIds(favorites: readonly SidebarFavoriteItem[] | undefined): string[] {
-  // LEAF-ONLY: recurse into group.items when a 'group' variant is added.
-  return getSidebarFavoriteItems(favorites).flatMap((favorite) => (favorite.type === 'mini_app' ? [favorite.id] : []))
-}
-
 /**
- * The full ordered, deduped sidebar list — apps and mini apps interleaved in
+ * The full ordered, deduped sidebar list — apps in
  * their stored order. Required apps missing from storage are prepended so they
  * are always visible. This is the single source of truth the sidebar renders
- * from; every mutation below operates on this list in place, preserving the
- * mixed order instead of segregating apps before mini apps.
+ * from; every mutation below operates on this list in place.
  */
 export function getOrderedVisibleSidebarFavoriteItems(
   favorites: readonly SidebarFavoriteItem[] | undefined
@@ -362,42 +338,11 @@ export function setSidebarAppPinned(
   return preserveForwardCompatibleSidebarFavoriteItems(favorites, [...items, createSidebarAppFavorite(id)])
 }
 
-/** Toggle a mini app favorite, preserving everything else. Adding appends to the end. */
-export function toggleSidebarMiniApp(
-  favorites: readonly SidebarFavoriteItem[] | undefined,
-  id: string
-): SidebarFavoriteItem[] {
-  const items = getOrderedVisibleSidebarFavoriteItems(favorites)
-  // LEAF-ONLY: recurse into group.items when a 'group' variant is added.
-  const isTarget = (item: SidebarFavoriteItem) => item.type === 'mini_app' && item.id === id
-
-  if (items.some(isTarget)) {
-    return preserveForwardCompatibleSidebarFavoriteItems(
-      favorites,
-      items.filter((item) => !isTarget(item))
-    )
-  }
-  return preserveForwardCompatibleSidebarFavoriteItems(favorites, [...items, createSidebarMiniAppFavorite(id)])
-}
-
-/** Remove a mini app favorite, preserving everything else in place. */
-export function removeSidebarMiniApp(
-  favorites: readonly SidebarFavoriteItem[] | undefined,
-  id: string
-): SidebarFavoriteItem[] {
-  // LEAF-ONLY: recurse into group.items when a 'group' variant is added.
-  return preserveForwardCompatibleSidebarFavoriteItems(
-    favorites,
-    getOrderedVisibleSidebarFavoriteItems(favorites).filter((item) => !(item.type === 'mini_app' && item.id === id))
-  )
-}
-
 // --- Launchpad app order --------------------------------------------------
 //
 // The launchpad orders its built-in app tiles through its own preference
 // (`ui.launchpad.app_order`), completely independent of the sidebar favorites
-// order. Mini app tiles are ordered by their global `orderKey` instead, so the
-// launchpad never reads or writes `ui.sidebar.favorites`.
+// order.
 
 /**
  * The ordered launchpad app ids. Stored order is filtered to valid app ids and

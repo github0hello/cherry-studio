@@ -2,9 +2,8 @@ import { getSidebarIconLabelKey } from '@renderer/i18n/label'
 import type { SidebarAppId } from '@renderer/utils/sidebar'
 import { getSidebarFavoriteKey, getSidebarMenuPath, isSidebarAppId } from '@renderer/utils/sidebar'
 import type { SidebarFavoriteItem } from '@shared/data/preference/preferenceTypes'
-import type { MiniApp } from '@shared/data/types/miniApp'
 
-import { MiniAppIcon, type ResolvedSidebarEntry } from '../Sidebar'
+import { type ResolvedSidebarEntry } from '../Sidebar'
 import { SIDEBAR_ICON_COMPONENTS } from './sidebarIcons'
 
 /** Exhaustiveness guard: a new `SidebarFavoriteItem` type must add a `case` below. */
@@ -14,18 +13,14 @@ function assertNever(value: never): never {
 
 /**
  * Runtime context a variant needs to resolve a favorite into a rendered row:
- * i18n, route inputs, installed mini app data, and the open/remove callbacks the
- * container owns.
+ * i18n, route inputs, and the open/remove callbacks the container owns.
  */
 export interface SidebarVariantContext {
   t: (key: string) => string
   defaultPaintingProvider: string
-  installedMiniApps: Map<string, MiniApp>
   isRequiredApp: (id: SidebarAppId) => boolean
   openApp: (id: SidebarAppId) => void
-  openMiniApp: (id: string) => void
   removeApp: (id: SidebarAppId) => void
-  removeMiniApp: (id: string) => void
 }
 
 /**
@@ -68,38 +63,6 @@ const appVariant: SidebarVariantDescriptor<Extract<SidebarFavoriteItem, { type: 
   }
 }
 
-const miniAppVariant: SidebarVariantDescriptor<Extract<SidebarFavoriteItem, { type: 'mini_app' }>> = {
-  resolve: (item, ctx) => {
-    const app = ctx.installedMiniApps.get(item.id)
-    // Stale mini app (no matching installed app) is dropped from the list but stays
-    // in the preference.
-    if (!app) return null
-
-    const title = app.nameKey ? ctx.t(app.nameKey) : app.name
-    const tab = {
-      title,
-      // Uploaded logo → main-resolved `logoSrc`; preset key → `logo`.
-      miniApp: { id: app.appId, logo: app.logoSrc ?? app.logo, url: app.url }
-    }
-
-    return {
-      key: getSidebarFavoriteKey(item),
-      label: title,
-      renderIcon: (_size, miniAppSize) => <MiniAppIcon tab={tab} size={miniAppSize} />,
-      isActive: (active) => active.activeTabId === app.appId,
-      onOpen: () => ctx.openMiniApp(app.appId),
-      contextMenuItems: [
-        {
-          type: 'item',
-          id: `sidebar.remove-mini-app.${app.appId}`,
-          label: ctx.t('launchpad.unpin_from_sidebar'),
-          onSelect: () => ctx.removeMiniApp(app.appId)
-        }
-      ]
-    }
-  }
-}
-
 /**
  * Resolve one stored favorite into a rendered row via its variant descriptor, or
  * `null` when it is not renderable. The single dispatch here is the only place
@@ -114,8 +77,6 @@ export function resolveSidebarEntry(
   switch (favorite.type) {
     case 'app':
       return appVariant.resolve(favorite, ctx)
-    case 'mini_app':
-      return miniAppVariant.resolve(favorite, ctx)
     default:
       return assertNever(favorite)
   }

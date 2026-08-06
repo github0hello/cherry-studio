@@ -1,5 +1,4 @@
 import { usePreference } from '@data/hooks/usePreference'
-import { useMiniAppPopup } from '@renderer/hooks/useMiniAppPopup'
 import { ipcApi } from '@renderer/ipc'
 import { loggerService } from '@renderer/services/LoggerService'
 import { toast } from '@renderer/services/toast'
@@ -44,7 +43,7 @@ export function useOpenClawGatewayController({
   setCurrentProvider
 }: UseOpenClawGatewayControllerOptions): OpenClawGatewayController {
   const { t } = useTranslation()
-  const { openSmartMiniApp } = useMiniAppPopup()
+
   const [gatewayPort] = usePreference('feature.openclaw.gateway_port')
   const [status, setStatus] = useState<OpenClawGatewayStatus>('stopped')
   const [launching, setLaunching] = useState(false)
@@ -55,15 +54,10 @@ export function useOpenClawGatewayController({
     const dashboardUrl = await ipcApi.request('openclaw.get_dashboard_url')
     const url = new URL(dashboardUrl)
     // A per-open revision makes equal dashboard URLs observable through the
-    // cross-window transient descriptor registry after a gateway restart.
+    // cache key without mutating the stored dashboard url.
     url.searchParams.set('cherry_navigation_revision', String(Date.now()))
-    openSmartMiniApp({
-      appId: 'openclaw-dashboard',
-      name: 'OpenClaw',
-      url: url.toString(),
-      logo: 'openclaw'
-    })
-  }, [openSmartMiniApp])
+    await ipcApi.request('system.shell.open_website', url.toString())
+  }, [ipcApi])
 
   const handleLaunch = useCallback(async () => {
     if (!enabledProvider || !currentProviderConfig?.modelId) {

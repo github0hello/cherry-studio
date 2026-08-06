@@ -95,7 +95,6 @@ export const SIDEBAR_FAVORITES = [
   'agents',
   'paintings',
   'translate',
-  'mini_app',
   'knowledge',
   'files',
   'code_tools',
@@ -113,15 +112,10 @@ export type SidebarFavorite = (typeof SIDEBAR_FAVORITES)[number]
  * `group` variant can then be added as another top-level item without migrating
  * existing flat `SidebarFavoriteItem[]` values.
  */
-export type SidebarFavoriteItem =
-  | {
-      type: 'app'
-      id: SidebarFavorite
-    }
-  | {
-      type: 'mini_app'
-      id: string
-    }
+export type SidebarFavoriteItem = {
+  type: 'app'
+  id: SidebarFavorite
+}
 
 export type AssistantIconType = 'model' | 'emoji' | 'none'
 
@@ -365,12 +359,6 @@ export type FileProcessorOverride = {
 }
 
 export type FileProcessorOverrides = Partial<Record<FileProcessorId, FileProcessorOverride>>
-
-/** Region types for miniApps visibility */
-export type MiniAppRegion = 'CN' | 'Global'
-
-export type MiniAppRegionFilter = 'auto' | MiniAppRegion
-
 /** User-configurable settings for BinaryManager's isolated mise install environment. */
 export type BinaryInstallSettings = {
   githubMirror: string

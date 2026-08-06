@@ -17,7 +17,7 @@ const ROUTE_LABELS: Record<string, { icon: string; labelKey: string }> = {
   '/app/files': { icon: '📁', labelKey: 'title.files' },
   '/app/notes': { icon: '📝', labelKey: 'title.notes' },
   '/app/knowledge': { icon: '📚', labelKey: 'title.knowledge' },
-  '/app/mini-app': { icon: '📦', labelKey: 'title.apps' },
+
   '/app/code': { icon: '💻', labelKey: 'title.code' },
   '/app/launchpad': { icon: '🚀', labelKey: 'title.launchpad' },
   '/app/agents': { icon: '🤖', labelKey: 'agent.sidebar_title' },
@@ -62,7 +62,7 @@ const ROUTE_LABELS: Record<string, { icon: string; labelKey: string }> = {
 const SORTED_ROUTES = Object.entries(ROUTE_LABELS).sort((a, b) => b[0].length - a[0].length)
 const KNOWN_NAVIGATION_ROUTES = [
   ...Object.keys(ROUTE_LABELS),
-  '/app/mini-app/$appId',
+
   '/app/paintings/$',
   '/settings/mcp/$',
   '/settings/mcp/settings/$serverId',

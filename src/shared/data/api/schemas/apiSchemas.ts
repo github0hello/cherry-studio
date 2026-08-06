@@ -33,7 +33,6 @@ import type { JobSchemas } from './jobs'
 import type { KnowledgeSchemas } from './knowledges'
 import type { McpServerSchemas } from './mcpServers'
 import type { MessageSchemas } from './messages'
-import type { MiniAppSchemas } from './miniApps'
 import type { ModelSchemas } from './models'
 import type { NoteSchemas } from './notes'
 import type { PaintingsSchemas } from './paintings'
@@ -70,7 +69,6 @@ export type ApiSchemas = AssertValidSchemas<
     FileSchemas &
     McpServerSchemas &
     KnowledgeSchemas &
-    MiniAppSchemas &
     NoteSchemas &
     AssistantSchemas &
     TagSchemas &

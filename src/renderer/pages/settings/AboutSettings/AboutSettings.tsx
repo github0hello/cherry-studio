@@ -22,13 +22,12 @@ import {
 } from '@renderer/components/SettingsPrimitives'
 import UpdateDialogPopup from '@renderer/components/UpdateDialogPopup'
 import { useAppUpdateState } from '@renderer/hooks/useAppUpdateState'
-import { useMiniAppPopup } from '@renderer/hooks/useMiniAppPopup'
 import { useTheme } from '@renderer/hooks/useTheme'
 import i18n from '@renderer/i18n/resolver'
 import { ipcApi } from '@renderer/ipc'
 import { toast } from '@renderer/services/toast'
 import { cn } from '@renderer/utils/style'
-import { ThemeMode, UpgradeChannel } from '@shared/data/preference/preferenceTypes'
+import { UpgradeChannel } from '@shared/data/preference/preferenceTypes'
 import { debounce } from 'es-toolkit/compat'
 import {
   BadgeQuestionMark,
@@ -60,7 +59,6 @@ const AboutSettings: FC = () => {
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { openSmartMiniApp } = useMiniAppPopup()
 
   const { appUpdateState, updateAppUpdateState } = useAppUpdateState()
 
@@ -113,12 +111,8 @@ const AboutSettings: FC = () => {
 
   const showReleases = async () => {
     const { appPath } = await ipcApi.request('app.get_info')
-    openSmartMiniApp({
-      appId: 'cherrystudio-releases',
-      name: t('settings.about.releases.title'),
-      url: `file://${appPath}/resources/cherry-studio/releases.html?theme=${theme === ThemeMode.dark ? 'dark' : 'light'}`,
-      logo: AppLogo
-    })
+    const releasesPath = `${appPath}/resources/cherry-studio/releases.html`
+    await ipcApi.request('system.shell.open_path', releasesPath)
   }
 
   const currentChannelByVersion =

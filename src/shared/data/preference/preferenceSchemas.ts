@@ -352,12 +352,6 @@ export interface PreferenceSchemas {
     'feature.file_processing.default_image_to_text': PreferenceTypes.FileProcessorId | null
     // target-key-definitions/complex/complex
     'feature.file_processing.overrides': PreferenceTypes.FileProcessorOverrides
-    // redux/settings/maxKeepAliveMinapps
-    'feature.mini_app.max_keep_alive': number
-    // redux/settings/minappsOpenLinkExternal
-    'feature.mini_app.open_link_external': boolean
-    // redux/settings/minAppRegion
-    'feature.mini_app.region': PreferenceTypes.MiniAppRegionFilter
     // redux/note/settings.defaultEditMode
     'feature.notes.default_edit_mode': string
     // redux/note/settings.defaultViewMode
@@ -686,9 +680,6 @@ export const DefaultPreferences: PreferenceSchemas = {
     'feature.file_processing.default_document_to_markdown': null,
     'feature.file_processing.default_image_to_text': null,
     'feature.file_processing.overrides': {} as PreferenceTypes.FileProcessorOverrides,
-    'feature.mini_app.max_keep_alive': 3,
-    'feature.mini_app.open_link_external': false,
-    'feature.mini_app.region': 'auto',
     'feature.notes.default_edit_mode': 'preview',
     'feature.notes.default_view_mode': 'edit',
     'feature.notes.font_family': 'default',
