@@ -91,7 +91,7 @@ export function useReconcileSkillsOnOpen(enabled: boolean): void {
  * Pass `agentId` to get per-agent enablement state. Without `agentId`, the
  * hook returns the global skill library with `isEnabled` forced to false.
  * Per-agent enablement is edited through the agent form and saved via
- * PATCH /agents (see `AgentEditDialog`), not through this hook.
+ * PATCH /agents, not through this hook.
  * `loading` covers the initial fetch; `refreshing` reports background
  * revalidation separately so cached rows can remain visible while consumers
  * that initialize editable state wait for the authoritative projection.

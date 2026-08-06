@@ -1,7 +1,7 @@
 import type { ResourceCreateValues } from '@renderer/types/resourceCatalog'
 import { describe, expect, it } from 'vitest'
 
-import { buildCreateAgentCommand, buildCreateAssistantDto } from '../resourceCreate'
+import { buildCreateAssistantDto } from '../resourceCreate'
 
 const values: ResourceCreateValues = {
   avatar: '🤖',
@@ -22,24 +22,6 @@ describe('resource create DTO mapping', () => {
       description: 'Investigates a topic',
       prompt: 'Use cited sources',
       knowledgeBaseIds: ['kb-1']
-    })
-  })
-
-  it('maps every agent-specific field', () => {
-    expect(buildCreateAgentCommand(values)).toEqual({
-      type: 'claude-code',
-      name: 'Researcher',
-      model: 'provider::model',
-      planModel: 'provider::model',
-      smallModel: 'provider::model',
-      description: 'Investigates a topic',
-      instructions: 'Use cited sources',
-      knowledgeBaseIds: ['kb-1'],
-      skillIds: ['skill-1'],
-      configuration: {
-        avatar: '🤖',
-        permission_mode: 'default'
-      }
     })
   })
 })

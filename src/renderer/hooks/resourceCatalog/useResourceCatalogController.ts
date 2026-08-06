@@ -8,18 +8,17 @@ import type {
   ResourceType
 } from '@renderer/types/resourceCatalog'
 import { serializeAssistantForExport } from '@renderer/utils/assistantTransfer'
-import { buildCreateAgentCommand, buildCreateAssistantDto } from '@renderer/utils/resourceCatalog'
+import { buildCreateAssistantDto } from '@renderer/utils/resourceCatalog'
 import type { InstalledSkill } from '@shared/data/types/agent'
 import type { Group } from '@shared/data/types/group'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { useAgentMutations } from './agentAdapter'
 import { useAssistantMutations } from './assistantAdapter'
 import { useResourceLibrary } from './useResourceLibrary'
 
-type ResourceCreateWizardKind = 'assistant' | 'agent'
-type ResourceCatalogControllerType = Extract<ResourceType, 'assistant' | 'agent' | 'skill'>
+type ResourceCreateWizardKind = 'assistant'
+type ResourceCatalogControllerType = Extract<ResourceType, 'assistant' | 'skill'>
 
 const CREATE_DIALOG_EXIT_ANIMATION_MS = 200
 
@@ -80,7 +79,6 @@ export function useResourceCatalogController(resourceType: ResourceCatalogContro
   }, [resourceType])
 
   const { createAssistant, duplicateAssistant } = useAssistantMutations()
-  const { createAgent } = useAgentMutations()
   const { groups } = useGroups('assistant')
   const { createGroup } = useGroupMutations('assistant')
   const groupById = useMemo(() => new Map(groups.map((group) => [group.id, group] as const)), [groups])
@@ -100,8 +98,6 @@ export function useResourceCatalogController(resourceType: ResourceCatalogContro
   const handleOpenResource = useCallback((resource: ResourceItem) => {
     if (resource.type === 'assistant') {
       setEditDialogTarget({ kind: 'assistant', id: resource.id })
-    } else if (resource.type === 'agent') {
-      setEditDialogTarget({ kind: 'agent', id: resource.id })
     } else if (resource.type === 'skill') {
       setSelectedSkill(resource.raw)
     }
@@ -144,9 +140,6 @@ export function useResourceCatalogController(resourceType: ResourceCatalogContro
     if (type === 'assistant') {
       setCreateDialogKind('assistant')
       setCreateDialogOpen(true)
-    } else if (type === 'agent') {
-      setCreateDialogKind('agent')
-      setCreateDialogOpen(true)
     } else if (type === 'skill') {
       setSkillImportOpen(true)
     }
@@ -169,8 +162,6 @@ export function useResourceCatalogController(resourceType: ResourceCatalogContro
       try {
         if (kind === 'assistant') {
           await createAssistant(buildCreateAssistantDto(values))
-        } else {
-          await createAgent(buildCreateAgentCommand(values))
         }
 
         setCreateDialogOpen(false)
@@ -179,7 +170,7 @@ export function useResourceCatalogController(resourceType: ResourceCatalogContro
         setCreatingResource(false)
       }
     },
-    [createAgent, createAssistant, createDialogKind, creatingResource, refetch]
+    [createAssistant, createDialogKind, creatingResource, refetch]
   )
 
   return {

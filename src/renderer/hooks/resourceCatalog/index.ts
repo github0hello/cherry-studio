@@ -1,4 +1,3 @@
-export { agentAdapter, useAgentMutations, useAgentMutationsById } from './agentAdapter'
 export {
   assistantAdapter,
   useAssistantMutations,

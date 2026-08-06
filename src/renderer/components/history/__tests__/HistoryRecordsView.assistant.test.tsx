@@ -132,7 +132,6 @@ vi.mock('@renderer/hooks/agent/useSession', () => ({
 }))
 
 vi.mock('@renderer/hooks/resourceViewSources', () => ({
-  useAgentSessionsSource: () => hookMocks.useSessions(),
   useAssistantTopicsSource: () => {
     const source = hookMocks.useTopics()
     return {

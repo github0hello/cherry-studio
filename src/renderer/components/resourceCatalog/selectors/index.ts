@@ -1,11 +1,4 @@
 export {
-  AgentSelector,
-  type AgentSelectorItem,
-  type AgentSelectorProps,
-  type AgentSelectorSingleIdProps,
-  type AgentSelectorSingleItemProps
-} from './AgentSelector'
-export {
   AssistantSelector,
   type AssistantSelectorItem,
   type AssistantSelectorMultiIdProps,

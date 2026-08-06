@@ -273,25 +273,6 @@ describe('useModelSelectorData', () => {
     expect([...result.current.visibleSelectedModelIdSet]).toEqual(['openai::gpt-4'])
   })
 
-  it('hides agent-only providers generally and includes them for a marked agent filter', () => {
-    wireDeps({
-      providers: [makeProvider('openai'), makeProvider('claude-code', { authMethods: ['external-cli'] })],
-      models: [makeModel('gpt-4', 'openai'), makeModel('claude-sonnet', 'claude-code')]
-    })
-
-    const general = renderHook(() => useModelSelectorData({ searchText: '' }))
-    expect(general.result.current.modelItems.map((item) => item.modelId)).toEqual(['openai::gpt-4'])
-    general.unmount()
-
-    const agentFilter = renderHook(() => useAgentModelFilter('claude-code'))
-    const agent = renderHook(() => useModelSelectorData({ searchText: '', filter: agentFilter.result.current }))
-
-    expect(agent.result.current.modelItems.map((item) => item.modelId).sort()).toEqual([
-      'claude-code::claude-sonnet',
-      'openai::gpt-4'
-    ])
-  })
-
   it('applies the caller filter before deriving available tags', () => {
     wireDeps({
       providers: [makeProvider('openai')],
